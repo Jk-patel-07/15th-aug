@@ -489,6 +489,157 @@ body {
 }
 
 /* ====================================================
+   RESPECTFUL FREEDOM FIGHTER TRIBUTE SCREEN (SCREEN 4)
+   ==================================================== */
+#tributeScreen {
+  background-color: #000000;
+}
+
+/* Historical Black & White Background Photo Styling */
+.history-bg-img {
+  filter: grayscale(100%) contrast(1.25) brightness(0.7);
+  opacity: 0.88;
+  transform: scale(1.05);
+  animation: historyKenBurns 32s ease-in-out infinite alternate;
+}
+
+@keyframes historyKenBurns {
+  0% { transform: scale(1.04) translate(0, 0); }
+  50% { transform: scale(1.09) translate(-8px, -5px); }
+  100% { transform: scale(1.05) translate(6px, 4px); }
+}
+
+.overlay-tribute-dark {
+  background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.78) 70%, rgba(0, 0, 0, 0.94) 100%);
+}
+
+.tribute-bg-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.glow-tribute-saffron {
+  top: -15%;
+  left: 30%;
+  width: 550px;
+  height: 550px;
+  background: var(--color-saffron);
+  filter: blur(170px);
+  opacity: 0.08;
+}
+
+.glow-tribute-green {
+  bottom: -15%;
+  right: 30%;
+  width: 550px;
+  height: 550px;
+  background: var(--color-green);
+  filter: blur(170px);
+  opacity: 0.08;
+}
+
+.tribute-content-centered {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 880px;
+  width: 100%;
+  padding: 2.5rem 2rem;
+}
+
+.tribute-lines-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8rem;
+  width: 100%;
+}
+
+.tribute-main-line {
+  font-family: var(--font-sans);
+  font-size: clamp(1.25rem, 2.7vw, 1.95rem);
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 1.75;
+  letter-spacing: 0.4px;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.18);
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.tribute-divider {
+  width: 75px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-saffron) 0%, #FFFFFF 50%, var(--color-green) 100%);
+  border-radius: 2px;
+  opacity: 0;
+  transform: scaleX(0);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+}
+
+.tribute-sub-line {
+  font-family: var(--font-sans);
+  font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.6;
+  letter-spacing: 0.8px;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.tribute-bottom-hint {
+  opacity: 0;
+}
+
+/* Staggered Slow Fade-In Animations for Screen 4 */
+.active-screen .tribute-l1 {
+  animation: fadeUpSlow 1.1s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.active-screen .tribute-l2 {
+  animation: scaleDivider 1.0s 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.active-screen .tribute-l3 {
+  animation: fadeUpSlow 1.1s 2.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.active-screen .tribute-bottom-hint {
+  animation: fadeUpHint 0.9s 3.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUpSlow {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleDivider {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 0.85;
+    transform: scaleX(1);
+  }
+}
+
+/* ====================================================
    PATRIOTIC CELEBRATION SHOWCASE SCREEN (SCREEN 3)
    ==================================================== */
 .celebration-content-centered {

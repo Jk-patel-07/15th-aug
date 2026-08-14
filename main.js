@@ -15,9 +15,9 @@ function initPageFlow() {
   const introScreen = document.getElementById('introScreen');
   const disclaimerScreen = document.getElementById('disclaimerScreen');
   const greetingScreen = document.getElementById('greetingScreen');
+  const tributeScreen = document.getElementById('tributeScreen');
   const celebrationScreen = document.getElementById('celebrationScreen');
 
-  const nextGreetingBtn = document.getElementById('nextGreetingBtn');
   const celebrationTitle = document.getElementById('celebrationTitle');
   const celebrationSubtext = document.getElementById('celebrationSubtext');
   const hintText = document.getElementById('hintText');
@@ -74,11 +74,19 @@ function initPageFlow() {
     });
   }
 
-  // 3. Personal Greeting Screen Click -> Opens Celebration Showcase Screen
+  // 3. Personal Greeting Screen Click -> Opens Freedom Fighter Tribute Screen
   if (greetingScreen) {
     greetingScreen.addEventListener('click', (e) => {
       if (e.target.closest('#audioBtn')) return;
-      switchScreen(greetingScreen, celebrationScreen, () => {
+      switchScreen(greetingScreen, tributeScreen);
+    });
+  }
+
+  // 4. Freedom Fighter Tribute Screen Click -> Opens Celebration Showcase Screen
+  if (tributeScreen) {
+    tributeScreen.addEventListener('click', (e) => {
+      if (e.target.closest('#audioBtn')) return;
+      switchScreen(tributeScreen, celebrationScreen, () => {
         if (window.triggerPetals) {
           window.triggerPetals(70);
         }
