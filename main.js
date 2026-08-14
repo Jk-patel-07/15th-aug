@@ -1,11 +1,8 @@
-// ----------------------------------------------------
-// CINEMATIC INDEPENDENCE DAY EXPERIENCE - MULTI-SCREEN JS
-// ----------------------------------------------------
-
 document.addEventListener('DOMContentLoaded', () => {
   initPageFlow();
   initPetalShower();
   initAudioSynthesizer();
+  initDocumentaryEngine();
 });
 
 /* ----------------------------------------------------
@@ -16,6 +13,7 @@ function initPageFlow() {
   const disclaimerScreen = document.getElementById('disclaimerScreen');
   const greetingScreen = document.getElementById('greetingScreen');
   const tributeScreen = document.getElementById('tributeScreen');
+  const documentaryScreen = document.getElementById('documentaryScreen');
   const celebrationScreen = document.getElementById('celebrationScreen');
 
   const celebrationTitle = document.getElementById('celebrationTitle');
@@ -82,19 +80,38 @@ function initPageFlow() {
     });
   }
 
-  // 4. Freedom Fighter Tribute Screen Click -> Opens Celebration Showcase Screen
+  // 4. Freedom Fighter Tribute Screen Click -> Opens Freedom Fighters Documentary Screen
   if (tributeScreen) {
     tributeScreen.addEventListener('click', (e) => {
       if (e.target.closest('#audioBtn')) return;
-      switchScreen(tributeScreen, celebrationScreen, () => {
-        if (window.triggerPetals) {
-          window.triggerPetals(70);
+      switchScreen(tributeScreen, documentaryScreen, () => {
+        if (window.startDocumentarySequence) {
+          window.startDocumentarySequence();
         }
       });
     });
   }
 
-  // 4. Celebration Screen Click -> Interactive Petal Explosion & Quote Cycle
+  // 5. Documentary Screen Click -> Next Slide or Opens Celebration Showcase Screen
+  if (documentaryScreen) {
+    documentaryScreen.addEventListener('click', (e) => {
+      if (e.target.closest('#audioBtn') || e.target.closest('#docAudioBtn')) return;
+      
+      if (window.handleDocumentaryClick) {
+        const isComplete = window.handleDocumentaryClick();
+        if (isComplete) {
+          if (window.stopDocumentarySequence) window.stopDocumentarySequence();
+          switchScreen(documentaryScreen, celebrationScreen, () => {
+            if (window.triggerPetals) {
+              window.triggerPetals(70);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  // 6. Celebration Screen Click -> Interactive Petal Explosion & Quote Cycle
   if (celebrationScreen) {
     celebrationScreen.addEventListener('click', (e) => {
       if (e.target.closest('#audioBtn')) return;
@@ -133,6 +150,124 @@ function initPageFlow() {
       }
     });
   }
+}
+
+/* ----------------------------------------------------
+   2. FREEDOM FIGHTERS DOCUMENTARY ENGINE
+   ---------------------------------------------------- */
+/* ----------------------------------------------------
+   2. FREEDOM FIGHTERS CINEMATIC VIDEO ENGINE
+   ---------------------------------------------------- */
+function initDocumentaryEngine() {
+  const docPhotoImg = document.getElementById('docPhotoImg');
+  const docContentCard = document.getElementById('docContentCard');
+  const docTitle = document.getElementById('docTitle');
+  const docQuote = document.getElementById('docQuote');
+  const docBottomHint = document.getElementById('docBottomHint');
+
+  let currentSlideIndex = 0;
+  let autoTimer = null;
+  let isSequenceFinished = false;
+
+  const freedomFighters = [
+    {
+      photo: "./bhagat_singh.png",
+      title: "BHAGAT SINGH",
+      quote: "“A fearless revolutionary who sacrificed his life for India's freedom.”"
+    },
+    {
+      photo: "./gandhi.png",
+      title: "MAHATMA GANDHI",
+      quote: "“A leader who inspired the nation through truth and non-violence.”"
+    },
+    {
+      photo: "./subhas_bose.png",
+      title: "SUBHAS CHANDRA BOSE",
+      quote: "“A determined leader who fought passionately for India's independence.”"
+    },
+    {
+      photo: "./azad.png",
+      title: "CHANDRASHEKHAR AZAD",
+      quote: "“A brave patriot who vowed to stay free until his last breath.”"
+    },
+    {
+      photo: "./rani_lakshmibai.png",
+      title: "RANI LAKSHMIBAI",
+      quote: "“A courageous queen who led the battlefield for Jhansi and India.”"
+    },
+    {
+      photo: "./patel.png",
+      title: "SARDAR VALLABHBHAI PATEL",
+      quote: "“The Iron Man who united hundreds of states into one nation.”"
+    }
+  ];
+
+  function renderSlide(index) {
+    if (index >= freedomFighters.length) {
+      isSequenceFinished = true;
+      if (docBottomHint) docBottomHint.classList.add('show-hint');
+      return;
+    }
+
+    currentSlideIndex = index;
+    const data = freedomFighters[index];
+
+    // Smooth cross-fade animation
+    if (docPhotoImg) docPhotoImg.classList.add('fade-out');
+    if (docContentCard) docContentCard.classList.add('fade-out');
+
+    setTimeout(() => {
+      if (docPhotoImg) {
+        docPhotoImg.src = data.photo;
+        docPhotoImg.classList.remove('fade-out');
+      }
+
+      if (docTitle) docTitle.textContent = data.title;
+      if (docQuote) docQuote.innerHTML = data.quote;
+
+      if (docContentCard) docContentCard.classList.remove('fade-out');
+
+      // Schedule next freedom fighter after 4.5 seconds
+      clearTimeout(autoTimer);
+      if (index < freedomFighters.length - 1) {
+        autoTimer = setTimeout(() => {
+          renderSlide(index + 1);
+        }, 4500);
+      } else {
+        // Last freedom fighter completed
+        autoTimer = setTimeout(() => {
+          isSequenceFinished = true;
+          if (docBottomHint) docBottomHint.classList.add('show-hint');
+        }, 4500);
+      }
+    }, 450);
+  }
+
+  window.startDocumentarySequence = function() {
+    isSequenceFinished = false;
+    currentSlideIndex = 0;
+    if (docBottomHint) docBottomHint.classList.remove('show-hint');
+    renderSlide(0);
+  };
+
+  window.stopDocumentarySequence = function() {
+    clearTimeout(autoTimer);
+  };
+
+  window.handleDocumentaryClick = function() {
+    if (isSequenceFinished) {
+      return true; // Transition to next page
+    } else if (currentSlideIndex < freedomFighters.length - 1) {
+      clearTimeout(autoTimer);
+      renderSlide(currentSlideIndex + 1);
+      return false; // Stay on page and render next fighter
+    } else {
+      // At final slide, finish sequence
+      isSequenceFinished = true;
+      if (docBottomHint) docBottomHint.classList.add('show-hint');
+      return true;
+    }
+  };
 }
 
 /* ----------------------------------------------------
