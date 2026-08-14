@@ -1,3 +1,10 @@
+import bhagatImg from './bhagat_singh.png';
+import gandhiImg from './gandhi.png';
+import subhasImg from './subhas_bose.png';
+import azadImg from './azad.png';
+import raniImg from './rani_lakshmibai.png';
+import patelImg from './patel.png';
+
 document.addEventListener('DOMContentLoaded', () => {
   initPageFlow();
   initPetalShower();
@@ -171,32 +178,32 @@ function initDocumentaryEngine() {
 
   const freedomFighters = [
     {
-      photo: "./bhagat_singh.png",
+      photo: bhagatImg,
       title: "BHAGAT SINGH",
       quote: "“A fearless revolutionary who sacrificed his life for India's freedom.”"
     },
     {
-      photo: "./gandhi.png",
+      photo: gandhiImg,
       title: "MAHATMA GANDHI",
       quote: "“A leader who inspired the nation through truth and non-violence.”"
     },
     {
-      photo: "./subhas_bose.png",
+      photo: subhasImg,
       title: "SUBHAS CHANDRA BOSE",
       quote: "“A determined leader who fought passionately for India's independence.”"
     },
     {
-      photo: "./azad.png",
+      photo: azadImg,
       title: "CHANDRASHEKHAR AZAD",
       quote: "“A brave patriot who vowed to stay free until his last breath.”"
     },
     {
-      photo: "./rani_lakshmibai.png",
+      photo: raniImg,
       title: "RANI LAKSHMIBAI",
       quote: "“A courageous queen who led the battlefield for Jhansi and India.”"
     },
     {
-      photo: "./patel.png",
+      photo: patelImg,
       title: "SARDAR VALLABHBHAI PATEL",
       quote: "“The Iron Man who united hundreds of states into one nation.”"
     }
