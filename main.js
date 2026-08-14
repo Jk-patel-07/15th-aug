@@ -1,72 +1,125 @@
 // ----------------------------------------------------
-// STANDALONE CINEMATIC INDEPENDENCE DAY EXPERIENCE - JS
+// CINEMATIC INDEPENDENCE DAY EXPERIENCE - MULTI-SCREEN JS
 // ----------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
-  initClickCelebrationLogic();
+  initPageFlow();
   initPetalShower();
   initAudioSynthesizer();
 });
 
 /* ----------------------------------------------------
-   1. ON-SCREEN CLICK CELEBRATION LOGIC (NO DASHBOARD)
+   1. PAGE SCREEN FLOW & CLICK NAVIGATION
    ---------------------------------------------------- */
-function initClickCelebrationLogic() {
-  const cinematicExperience = document.getElementById('cinematicExperience');
-  const titleText = document.getElementById('titleText');
-  const taglineText = document.getElementById('taglineText');
-  const bottomHint = document.getElementById('bottomHint');
-  const hintText = document.getElementById('hintText');
-  const lightSweep = document.getElementById('lightSweep');
+function initPageFlow() {
+  const introScreen = document.getElementById('introScreen');
+  const disclaimerScreen = document.getElementById('disclaimerScreen');
+  const greetingScreen = document.getElementById('greetingScreen');
+  const celebrationScreen = document.getElementById('celebrationScreen');
 
-  let clickCount = 0;
+  const nextGreetingBtn = document.getElementById('nextGreetingBtn');
+  const celebrationTitle = document.getElementById('celebrationTitle');
+  const celebrationSubtext = document.getElementById('celebrationSubtext');
+  const hintText = document.getElementById('hintText');
+  const celebrationLightSweep = document.getElementById('celebrationLightSweep');
+
+  let isTransitioning = false;
+  let celebrationClickCount = 0;
 
   const celebrationPhrases = [
-    "HAPPY INDEPENDENCE DAY 🇮🇳 • VANDE MATARAM",
-    "UNITY IN DIVERSITY • SARE JAHAN SE ACCHA 🇮🇳",
-    "SALUTING THE BRAVE HEROES OF FREEDOM 🫡",
-    "JAI HIND! MAY THE TRICOLOR ALWAYS FLY HIGH 🇮🇳"
+    { title: "VANDE MATARAM", subtext: "Saluting the brave heroes of freedom & the sovereign spirit of India." },
+    { title: "SARE JAHAN SE ACCHA", subtext: "Celebrating unity in diversity across our sacred motherland." },
+    { title: "JAI HIND!", subtext: "May the Tricolor fly high with eternal dignity, strength, and pride." },
+    { title: "BHARAT MATA KI JAI", subtext: "Honoring the sacrifices that shaped our independent nation." }
   ];
 
-  if (cinematicExperience) {
-    cinematicExperience.addEventListener('click', (e) => {
-      // Don't trigger if audio button was clicked
+  function switchScreen(currentScreen, nextScreen, onComplete) {
+    if (isTransitioning || !currentScreen || !nextScreen) return;
+    isTransitioning = true;
+
+    // Fade out current screen
+    currentScreen.classList.remove('active-screen');
+    currentScreen.classList.add('hidden-screen');
+
+    setTimeout(() => {
+      // Fade in next screen
+      nextScreen.classList.remove('hidden-screen');
+      nextScreen.classList.add('active-screen');
+      
+      if (window.playPatrioticTone) {
+        window.playPatrioticTone();
+      }
+
+      if (onComplete) onComplete();
+
+      setTimeout(() => {
+        isTransitioning = false;
+      }, 300);
+    }, 550);
+  }
+
+  // 1. Intro Screen Click -> Opens DDO Company Disclaimer Screen
+  if (introScreen) {
+    introScreen.addEventListener('click', (e) => {
       if (e.target.closest('#audioBtn')) return;
+      switchScreen(introScreen, disclaimerScreen);
+    });
+  }
 
-      clickCount++;
+  // 2. Disclaimer Screen Click -> Opens Personal Greeting Screen
+  if (disclaimerScreen) {
+    disclaimerScreen.addEventListener('click', (e) => {
+      if (e.target.closest('#audioBtn')) return;
+      switchScreen(disclaimerScreen, greetingScreen);
+    });
+  }
 
-      // 1. Trigger Petal Shower Explosion
+  // 3. Personal Greeting Screen Click -> Opens Celebration Showcase Screen
+  if (greetingScreen) {
+    greetingScreen.addEventListener('click', (e) => {
+      if (e.target.closest('#audioBtn')) return;
+      switchScreen(greetingScreen, celebrationScreen, () => {
+        if (window.triggerPetals) {
+          window.triggerPetals(70);
+        }
+      });
+    });
+  }
+
+  // 4. Celebration Screen Click -> Interactive Petal Explosion & Quote Cycle
+  if (celebrationScreen) {
+    celebrationScreen.addEventListener('click', (e) => {
+      if (e.target.closest('#audioBtn')) return;
+      if (isTransitioning) return;
+
+      celebrationClickCount++;
+
+      // Trigger Petal Shower Explosion
       if (window.triggerPetals) {
         window.triggerPetals(80);
       }
 
-      // 2. Trigger Title Glow Pulse Animation
-      if (titleText) {
-        titleText.classList.remove('title-celebrate');
-        void titleText.offsetWidth; // Reflow
-        titleText.classList.add('title-celebrate');
+      // Trigger Light Sweep
+      if (celebrationLightSweep) {
+        celebrationLightSweep.classList.remove('trigger-sweep');
+        void celebrationLightSweep.offsetWidth;
+        celebrationLightSweep.classList.add('trigger-sweep');
       }
 
-      // 3. Trigger Light Sweep
-      if (lightSweep) {
-        lightSweep.classList.remove('trigger-sweep');
-        void lightSweep.offsetWidth;
-        lightSweep.classList.add('trigger-sweep');
-      }
-
-      // 4. Update Bottom Hint text smoothly on the same screen
-      if (hintText && bottomHint) {
-        const nextPhrase = celebrationPhrases[(clickCount - 1) % celebrationPhrases.length];
-        hintText.style.opacity = '0';
+      // Cycle text phrases
+      const phraseData = celebrationPhrases[(celebrationClickCount - 1) % celebrationPhrases.length];
+      if (celebrationTitle && celebrationSubtext) {
+        celebrationTitle.style.opacity = '0';
+        celebrationSubtext.style.opacity = '0';
 
         setTimeout(() => {
-          hintText.textContent = nextPhrase;
-          hintText.style.opacity = '1';
-          bottomHint.classList.add('celebrating');
-        }, 150);
+          celebrationTitle.textContent = phraseData.title;
+          celebrationSubtext.textContent = phraseData.subtext;
+          celebrationTitle.style.opacity = '1';
+          celebrationSubtext.style.opacity = '1';
+        }, 180);
       }
 
-      // 5. Synthesize subtle audio tone if unmuted
       if (window.playPatrioticTone) {
         window.playPatrioticTone();
       }
@@ -233,3 +286,4 @@ function initAudioSynthesizer() {
     });
   }
 }
+

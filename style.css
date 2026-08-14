@@ -19,6 +19,7 @@
 
   --transition-fast: 0.2s ease;
   --transition-normal: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-page: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Reset & Base */
@@ -53,30 +54,12 @@ body {
   z-index: 999;
 }
 
-/* ====================================================
-   STANDALONE CINEMATIC SCREEN
-   ==================================================== */
-.cinematic-screen-real {
-  position: fixed;
-  inset: 0;
-  background-color: var(--bg-pure-black);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  cursor: pointer;
-  user-select: none;
-  overflow: hidden;
-}
-
-/* Top Right Audio Control */
+/* Global Top Controls */
 .top-controls {
-  position: absolute;
+  position: fixed;
   top: 2rem;
   right: 2rem;
-  z-index: 10;
+  z-index: 1000;
 }
 
 .btn-audio-toggle {
@@ -85,7 +68,7 @@ body {
   justify-content: center;
   padding: 0.65rem;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   color: var(--color-white);
   border: 1px solid var(--border-glass);
   backdrop-filter: blur(10px);
@@ -100,6 +83,39 @@ body {
 }
 
 .hidden { display: none !important; }
+
+/* ====================================================
+   PAGE SCREEN SYSTEM (SMOOTH TRANSITIONS)
+   ==================================================== */
+.page-screen {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-pure-black);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  transition: opacity var(--transition-page), transform var(--transition-page), visibility var(--transition-page);
+}
+
+.active-screen {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.hidden-screen {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.98);
+  pointer-events: none;
+}
 
 /* Animated Photo Background Container */
 .bg-photo-wrapper {
@@ -135,6 +151,10 @@ body {
   background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.85) 75%, rgba(0, 0, 0, 0.98) 100%);
 }
 
+.bg-photo-overlay.overlay-deep {
+  background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.92) 75%, rgba(0, 0, 0, 0.99) 100%);
+}
+
 /* Light Sweep Sheen */
 .bg-light-sweep {
   position: absolute;
@@ -163,7 +183,7 @@ body {
   100% { left: 200%; opacity: 0; }
 }
 
-/* Centered Typography */
+/* Centered Typography for Screen 1 */
 .intro-content-centered {
   position: relative;
   z-index: 2;
@@ -249,7 +269,292 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Subtle Bottom Hint & Celebratory Message */
+/* ====================================================
+   DDO COMPANY DISCLAIMER SCREEN (MINIMAL, PREMIUM, BLACK)
+   ==================================================== */
+#disclaimerScreen {
+  background-color: #000000;
+}
+
+.disclaimer-bg-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.12;
+}
+
+.glow-saffron {
+  top: -15%;
+  left: 20%;
+  width: 450px;
+  height: 450px;
+  background: var(--color-saffron);
+}
+
+.glow-green {
+  bottom: -15%;
+  right: 20%;
+  width: 450px;
+  height: 450px;
+  background: var(--color-green);
+}
+
+.disclaimer-content-centered {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+  padding: 3rem 2rem;
+}
+
+.disclaimer-brand-tag {
+  font-family: var(--font-sans);
+  font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.disclaimer-main-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6.5vw, 4.8rem);
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #FFFFFF;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+  text-transform: uppercase;
+}
+
+.tricolor-accent-line {
+  width: 90px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-saffron) 0%, #FFFFFF 50%, var(--color-green) 100%);
+  margin-bottom: 2rem;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.disclaimer-text {
+  font-family: var(--font-sans);
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.8;
+  max-width: 680px;
+  letter-spacing: 0.4px;
+}
+
+/* ====================================================
+   PERSONAL INDEPENDENCE DAY GREETING SCREEN (SCREEN 3)
+   ==================================================== */
+#greetingScreen {
+  background-color: #000000;
+}
+
+.greeting-bg-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.glow-greeting-saffron {
+  top: -20%;
+  right: 15%;
+  width: 500px;
+  height: 500px;
+  background: var(--color-saffron);
+  filter: blur(160px);
+  opacity: 0.09;
+}
+
+.glow-greeting-green {
+  bottom: -20%;
+  left: 15%;
+  width: 500px;
+  height: 500px;
+  background: var(--color-green);
+  filter: blur(160px);
+  opacity: 0.09;
+}
+
+.greeting-content-centered {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 850px;
+  width: 100%;
+  padding: 2rem;
+}
+
+.greeting-lines-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+  margin-bottom: 2.5rem;
+}
+
+.greeting-line {
+  font-family: var(--font-sans);
+  font-size: clamp(1.2rem, 2.6vw, 1.85rem);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.active-screen .greeting-l1 {
+  animation: fadeUpLine 0.7s 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.active-screen .greeting-l2 {
+  animation: fadeUpLine 0.7s 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.active-screen .greeting-l3 {
+  animation: fadeUpLine 0.7s 1.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.active-screen .greeting-l4 {
+  animation: fadeUpLine 0.7s 2.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.greeting-bottom-hint {
+  opacity: 0;
+}
+
+.active-screen .greeting-bottom-hint {
+  animation: fadeUpHint 0.8s 3.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUpLine {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUpHint {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 15px);
+  }
+  to {
+    opacity: 0.65;
+    transform: translate(-50%, 0);
+  }
+}
+
+.text-accent-saffron {
+  color: var(--color-saffron);
+  font-weight: 700;
+  text-shadow: 0 0 20px var(--color-saffron-glow);
+}
+
+.text-accent-green {
+  color: #00A859;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(0, 168, 89, 0.5);
+}
+
+/* ====================================================
+   PATRIOTIC CELEBRATION SHOWCASE SCREEN (SCREEN 3)
+   ==================================================== */
+.celebration-content-centered {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 900px;
+  width: 100%;
+}
+
+.celebration-emblem {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+}
+
+.celebration-main-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 6.5vw, 5rem);
+  font-weight: 900;
+  letter-spacing: 4px;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  background: linear-gradient(180deg, #FFFFFF 40%, rgba(255, 255, 255, 0.85) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+  text-transform: uppercase;
+}
+
+.celebration-subtext {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: var(--color-white-muted);
+  max-width: 640px;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.celebration-tag-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tag-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 0.4rem 1.2rem;
+  border-radius: 50px;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-glass);
+}
+
+.tag-saffron { color: var(--color-saffron); border-color: rgba(255, 103, 31, 0.4); }
+.tag-white { color: #FFFFFF; border-color: rgba(255, 255, 255, 0.4); }
+.tag-green { color: #00A859; border-color: rgba(4, 106, 56, 0.5); }
+
+/* Bottom Hint Styling */
 .click-continue-hint {
   position: absolute;
   bottom: 3rem;
@@ -259,7 +564,7 @@ body {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 4px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.65);
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
   animation: pulseOpacity 3s ease-in-out infinite;
   pointer-events: none;
@@ -270,7 +575,6 @@ body {
   color: var(--color-saffron);
   font-size: clamp(0.85rem, 1.5vw, 1rem);
   text-shadow: 0 0 20px var(--color-saffron-glow);
-  animation: none;
 }
 
 @keyframes pulseOpacity {
@@ -282,5 +586,7 @@ body {
 @media (max-width: 480px) {
   .intro-main-title { font-size: 2.2rem; }
   .intro-date-badge { font-size: 1.2rem; }
+  .disclaimer-main-heading { font-size: 2.4rem; }
   .top-controls { top: 1.25rem; right: 1.25rem; }
 }
+
