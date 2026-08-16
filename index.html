@@ -139,31 +139,25 @@
     </div>
   </div>
 
-  <!-- PAGE 5: CINEMATIC FREEDOM FIGHTERS VIDEO SEQUENCE SCREEN -->
+  <!-- PAGE 5: OLD VIDEO CLIPS SCREEN -->
   <div id="documentaryScreen" class="page-screen hidden-screen">
-    <!-- Historical Portrait Background Layer -->
-    <div class="bg-photo-wrapper">
-      <img id="docPhotoImg" src="./bhagat_singh.png" alt="Freedom Fighter Historical Photo" class="bg-photo-img doc-cinematic-img" />
-      <div class="bg-photo-overlay overlay-cinematic-dark"></div>
+    <!-- Dynamic Title Screen Layer -->
+    <div id="page5TitleCard" class="page5-title-centered">
+      <p id="page5TitleText" class="page5-simple-text">OLD VIDEO CLIP #1</p>
     </div>
 
-    <!-- Subtle Ambient Backdrop Glow -->
-    <div class="cinematic-bg-glow">
-      <div class="glow-orb glow-cinematic-saffron"></div>
-      <div class="glow-orb glow-cinematic-green"></div>
+    <!-- Start Hint (Visible Before Click) -->
+    <div class="click-continue-hint page5-start-hint" id="page5StartHint">
+      <span>CLICK ANYWHERE TO START VIDEO</span>
     </div>
 
-    <!-- Centered Cinematic Freedom Fighter Text Presentation -->
-    <div class="cinematic-content-centered" id="docContentCard">
-      <h1 class="cinematic-title" id="docTitle">BHAGAT SINGH</h1>
-      <div class="cinematic-accent-line"></div>
-      <p class="cinematic-quote" id="docQuote">
-        “A fearless revolutionary who sacrificed his life for India's freedom.”
-      </p>
+    <!-- Full-Screen Video Layer (Revealed On Click) -->
+    <div id="page5FullVideoWrapper" class="page5-full-video-wrapper hidden-video">
+      <video id="page5Video" class="page5-fullscreen-video" playsinline preload="auto"></video>
     </div>
 
-    <!-- Bottom Hint (Shows when video sequence completes) -->
-    <div class="click-continue-hint doc-bottom-hint" id="docBottomHint">
+    <!-- End Hint (Appears for Video Clip #2 Screen) -->
+    <div class="click-continue-hint page5-end-hint" id="page5EndHint">
       <span>CLICK ANYWHERE TO CONTINUE</span>
     </div>
   </div>

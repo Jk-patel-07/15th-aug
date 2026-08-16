@@ -1,15 +1,10 @@
-import bhagatImg from './bhagat_singh.png';
-import gandhiImg from './gandhi.png';
-import subhasImg from './subhas_bose.png';
-import azadImg from './azad.png';
-import raniImg from './rani_lakshmibai.png';
-import patelImg from './patel.png';
+import page5VideoSrc from './page5_video.mp4';
 
 document.addEventListener('DOMContentLoaded', () => {
   initPageFlow();
   initPetalShower();
   initAudioSynthesizer();
-  initDocumentaryEngine();
+  initPage5Engine();
 });
 
 /* ----------------------------------------------------
@@ -87,33 +82,33 @@ function initPageFlow() {
     });
   }
 
-  // 4. Freedom Fighter Tribute Screen Click -> Opens Freedom Fighters Documentary Screen
+  // 4. Freedom Fighter Tribute Screen Click -> Opens Page 5
   if (tributeScreen) {
     tributeScreen.addEventListener('click', (e) => {
       if (e.target.closest('#audioBtn')) return;
       switchScreen(tributeScreen, documentaryScreen, () => {
-        if (window.startDocumentarySequence) {
-          window.startDocumentarySequence();
+        if (window.startPage5Sequence) {
+          window.startPage5Sequence();
         }
       });
     });
   }
 
-  // 5. Documentary Screen Click -> Next Slide or Opens Celebration Showcase Screen
+  // 5. Page 5 Screen Click -> Start Video or Immediately Open Next Page
+  window.advanceFromPage5 = function() {
+    if (window.stopPage5Sequence) window.stopPage5Sequence();
+    switchScreen(documentaryScreen, celebrationScreen, () => {
+      if (window.triggerPetals) {
+        window.triggerPetals(70);
+      }
+    });
+  };
+
   if (documentaryScreen) {
     documentaryScreen.addEventListener('click', (e) => {
-      if (e.target.closest('#audioBtn') || e.target.closest('#docAudioBtn')) return;
-      
-      if (window.handleDocumentaryClick) {
-        const isComplete = window.handleDocumentaryClick();
-        if (isComplete) {
-          if (window.stopDocumentarySequence) window.stopDocumentarySequence();
-          switchScreen(documentaryScreen, celebrationScreen, () => {
-            if (window.triggerPetals) {
-              window.triggerPetals(70);
-            }
-          });
-        }
+      if (e.target.closest('#audioBtn')) return;
+      if (window.handlePage5Click) {
+        window.handlePage5Click();
       }
     });
   }
@@ -157,124 +152,6 @@ function initPageFlow() {
       }
     });
   }
-}
-
-/* ----------------------------------------------------
-   2. FREEDOM FIGHTERS DOCUMENTARY ENGINE
-   ---------------------------------------------------- */
-/* ----------------------------------------------------
-   2. FREEDOM FIGHTERS CINEMATIC VIDEO ENGINE
-   ---------------------------------------------------- */
-function initDocumentaryEngine() {
-  const docPhotoImg = document.getElementById('docPhotoImg');
-  const docContentCard = document.getElementById('docContentCard');
-  const docTitle = document.getElementById('docTitle');
-  const docQuote = document.getElementById('docQuote');
-  const docBottomHint = document.getElementById('docBottomHint');
-
-  let currentSlideIndex = 0;
-  let autoTimer = null;
-  let isSequenceFinished = false;
-
-  const freedomFighters = [
-    {
-      photo: bhagatImg,
-      title: "BHAGAT SINGH",
-      quote: "“A fearless revolutionary who sacrificed his life for India's freedom.”"
-    },
-    {
-      photo: gandhiImg,
-      title: "MAHATMA GANDHI",
-      quote: "“A leader who inspired the nation through truth and non-violence.”"
-    },
-    {
-      photo: subhasImg,
-      title: "SUBHAS CHANDRA BOSE",
-      quote: "“A determined leader who fought passionately for India's independence.”"
-    },
-    {
-      photo: azadImg,
-      title: "CHANDRASHEKHAR AZAD",
-      quote: "“A brave patriot who vowed to stay free until his last breath.”"
-    },
-    {
-      photo: raniImg,
-      title: "RANI LAKSHMIBAI",
-      quote: "“A courageous queen who led the battlefield for Jhansi and India.”"
-    },
-    {
-      photo: patelImg,
-      title: "SARDAR VALLABHBHAI PATEL",
-      quote: "“The Iron Man who united hundreds of states into one nation.”"
-    }
-  ];
-
-  function renderSlide(index) {
-    if (index >= freedomFighters.length) {
-      isSequenceFinished = true;
-      if (docBottomHint) docBottomHint.classList.add('show-hint');
-      return;
-    }
-
-    currentSlideIndex = index;
-    const data = freedomFighters[index];
-
-    // Smooth cross-fade animation
-    if (docPhotoImg) docPhotoImg.classList.add('fade-out');
-    if (docContentCard) docContentCard.classList.add('fade-out');
-
-    setTimeout(() => {
-      if (docPhotoImg) {
-        docPhotoImg.src = data.photo;
-        docPhotoImg.classList.remove('fade-out');
-      }
-
-      if (docTitle) docTitle.textContent = data.title;
-      if (docQuote) docQuote.innerHTML = data.quote;
-
-      if (docContentCard) docContentCard.classList.remove('fade-out');
-
-      // Schedule next freedom fighter after 4.5 seconds
-      clearTimeout(autoTimer);
-      if (index < freedomFighters.length - 1) {
-        autoTimer = setTimeout(() => {
-          renderSlide(index + 1);
-        }, 4500);
-      } else {
-        // Last freedom fighter completed
-        autoTimer = setTimeout(() => {
-          isSequenceFinished = true;
-          if (docBottomHint) docBottomHint.classList.add('show-hint');
-        }, 4500);
-      }
-    }, 450);
-  }
-
-  window.startDocumentarySequence = function() {
-    isSequenceFinished = false;
-    currentSlideIndex = 0;
-    if (docBottomHint) docBottomHint.classList.remove('show-hint');
-    renderSlide(0);
-  };
-
-  window.stopDocumentarySequence = function() {
-    clearTimeout(autoTimer);
-  };
-
-  window.handleDocumentaryClick = function() {
-    if (isSequenceFinished) {
-      return true; // Transition to next page
-    } else if (currentSlideIndex < freedomFighters.length - 1) {
-      clearTimeout(autoTimer);
-      renderSlide(currentSlideIndex + 1);
-      return false; // Stay on page and render next fighter
-    } else {
-      // At final slide, finish sequence
-      isSequenceFinished = true;
-      if (docBottomHint) docBottomHint.classList.add('show-hint');
-      return true;
-    }
-  };
 }
 
 /* ----------------------------------------------------
@@ -435,5 +312,115 @@ function initAudioSynthesizer() {
       }
     });
   }
+}
+
+/* ----------------------------------------------------
+   4. PAGE 5 TWO-STAGE VIDEO ENGINE (VIDEO #1 & VIDEO CLIP #2 TITLE)
+   ---------------------------------------------------- */
+function initPage5Engine() {
+  const videoEl = document.getElementById('page5Video');
+  const fullVideoWrapper = document.getElementById('page5FullVideoWrapper');
+  const titleCard = document.getElementById('page5TitleCard');
+  const titleText = document.getElementById('page5TitleText');
+  const startHint = document.getElementById('page5StartHint');
+  const endHint = document.getElementById('page5EndHint');
+
+  if (videoEl) videoEl.src = page5VideoSrc;
+
+  let page5State = 'TITLE_1'; // 'TITLE_1' | 'PLAYING_1' | 'TITLE_2'
+
+  function stopAllMedia() {
+    page5State = 'TITLE_1';
+    if (videoEl) {
+      videoEl.pause();
+      videoEl.currentTime = 0;
+      videoEl.onended = null;
+      videoEl.ontimeupdate = null;
+      videoEl.onerror = null;
+    }
+    if (fullVideoWrapper) {
+      fullVideoWrapper.classList.remove('active-video');
+    }
+    if (titleText) {
+      titleText.textContent = 'OLD VIDEO CLIP #1';
+    }
+    if (titleCard) {
+      titleCard.style.opacity = '1';
+    }
+    if (startHint) {
+      startHint.style.opacity = '0.75';
+    }
+    if (endHint) {
+      endHint.classList.remove('show-hint');
+    }
+  }
+
+  window.startPage5Sequence = function() {
+    stopAllMedia();
+  };
+
+  function showTitle2Screen() {
+    page5State = 'TITLE_2';
+    if (videoEl) {
+      videoEl.pause();
+    }
+    if (fullVideoWrapper) {
+      fullVideoWrapper.classList.remove('active-video');
+    }
+    if (titleText) {
+      titleText.textContent = 'OLD VIDEO CLIP #2';
+    }
+    if (titleCard) {
+      titleCard.style.opacity = '1';
+    }
+    if (startHint) {
+      startHint.style.opacity = '0';
+    }
+    if (endHint) {
+      endHint.classList.add('show-hint');
+    }
+  }
+
+  window.handlePage5Click = function() {
+    if (page5State === 'TITLE_1') {
+      // First click: Start Video Clip #1 in Full-Screen mode
+      page5State = 'PLAYING_1';
+
+      if (titleCard) titleCard.style.opacity = '0';
+      if (startHint) startHint.style.opacity = '0';
+      if (fullVideoWrapper) fullVideoWrapper.classList.add('active-video');
+
+      if (videoEl) {
+        videoEl.currentTime = 0;
+        videoEl.muted = false;
+        videoEl.volume = 1.0;
+
+        videoEl.onended = showTitle2Screen;
+        videoEl.onerror = showTitle2Screen;
+        videoEl.ontimeupdate = () => {
+          if (videoEl.duration && (videoEl.duration - videoEl.currentTime <= 0.4)) {
+            showTitle2Screen();
+          }
+        };
+
+        videoEl.play().catch(err => {
+          console.warn('Video play error:', err);
+          showTitle2Screen();
+        });
+      }
+    } else if (page5State === 'PLAYING_1') {
+      // Clicked while Video Clip #1 is playing -> finish Video Clip #1 and show Video Clip #2 screen
+      showTitle2Screen();
+    } else if (page5State === 'TITLE_2') {
+      // Clicked on "OLD VIDEO CLIP #2" screen -> advance to Page 6
+      if (window.advanceFromPage5) {
+        window.advanceFromPage5();
+      }
+    }
+  };
+
+  window.stopPage5Sequence = function() {
+    stopAllMedia();
+  };
 }
 
