@@ -16,22 +16,9 @@ function initPageFlow() {
   const greetingScreen = document.getElementById('greetingScreen');
   const tributeScreen = document.getElementById('tributeScreen');
   const documentaryScreen = document.getElementById('documentaryScreen');
-  const celebrationScreen = document.getElementById('celebrationScreen');
-
-  const celebrationTitle = document.getElementById('celebrationTitle');
-  const celebrationSubtext = document.getElementById('celebrationSubtext');
-  const hintText = document.getElementById('hintText');
-  const celebrationLightSweep = document.getElementById('celebrationLightSweep');
+  const thanksScreen = document.getElementById('thanksScreen');
 
   let isTransitioning = false;
-  let celebrationClickCount = 0;
-
-  const celebrationPhrases = [
-    { title: "VANDE MATARAM", subtext: "Saluting the brave heroes of freedom & the sovereign spirit of India." },
-    { title: "SARE JAHAN SE ACCHA", subtext: "Celebrating unity in diversity across our sacred motherland." },
-    { title: "JAI HIND!", subtext: "May the Tricolor fly high with eternal dignity, strength, and pride." },
-    { title: "BHARAT MATA KI JAI", subtext: "Honoring the sacrifices that shaped our independent nation." }
-  ];
 
   function switchScreen(currentScreen, nextScreen, onComplete) {
     if (isTransitioning || !currentScreen || !nextScreen) return;
@@ -94,60 +81,24 @@ function initPageFlow() {
     });
   }
 
-  // 5. Page 5 Screen Click -> Start Video or Advance Screen
+  // 5. Page 5 Screen Click -> Start Video or Advance to End-Credits Screen
   if (documentaryScreen) {
     documentaryScreen.addEventListener('click', (e) => {
       if (e.target.closest('#audioBtn')) return;
       if (window.handlePage5Interaction) {
         const shouldAdvance = window.handlePage5Interaction();
         if (shouldAdvance) {
-          switchScreen(documentaryScreen, celebrationScreen, () => {
-            if (window.triggerPetals) {
-              window.triggerPetals(70);
-            }
-          });
+          switchScreen(documentaryScreen, thanksScreen);
         }
       }
     });
   }
 
-  // 6. Celebration Screen Click -> Interactive Petal Explosion & Quote Cycle
-  if (celebrationScreen) {
-    celebrationScreen.addEventListener('click', (e) => {
+  // 7. Final Thanks Screen Click -> Replay Presentation from Intro (Page 1)
+  if (thanksScreen) {
+    thanksScreen.addEventListener('click', (e) => {
       if (e.target.closest('#audioBtn')) return;
-      if (isTransitioning) return;
-
-      celebrationClickCount++;
-
-      // Trigger Petal Shower Explosion
-      if (window.triggerPetals) {
-        window.triggerPetals(80);
-      }
-
-      // Trigger Light Sweep
-      if (celebrationLightSweep) {
-        celebrationLightSweep.classList.remove('trigger-sweep');
-        void celebrationLightSweep.offsetWidth;
-        celebrationLightSweep.classList.add('trigger-sweep');
-      }
-
-      // Cycle text phrases
-      const phraseData = celebrationPhrases[(celebrationClickCount - 1) % celebrationPhrases.length];
-      if (celebrationTitle && celebrationSubtext) {
-        celebrationTitle.style.opacity = '0';
-        celebrationSubtext.style.opacity = '0';
-
-        setTimeout(() => {
-          celebrationTitle.textContent = phraseData.title;
-          celebrationSubtext.textContent = phraseData.subtext;
-          celebrationTitle.style.opacity = '1';
-          celebrationSubtext.style.opacity = '1';
-        }, 180);
-      }
-
-      if (window.playPatrioticTone) {
-        window.playPatrioticTone();
-      }
+      switchScreen(thanksScreen, introScreen);
     });
   }
 }
@@ -310,26 +261,86 @@ function initAudioSynthesizer() {
       }
     });
   }
+
+  // Cinematic Respectful Patriotic Music Synthesizer for "JAI HIND" screen
+  window.playCinematicPatrioticMusic = function() {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioContext();
+      if (ctx.state === 'suspended') ctx.resume();
+
+      const anthemMelody = [
+        { freq: 392.00, duration: 0.65, delay: 0.0 },  // G4
+        { freq: 440.00, duration: 0.65, delay: 0.7 },  // A4
+        { freq: 523.25, duration: 0.85, delay: 1.4 },  // C5
+        { freq: 587.33, duration: 0.85, delay: 2.3 },  // D5
+        { freq: 659.25, duration: 1.3,  delay: 3.2 },  // E5
+        { freq: 587.33, duration: 0.75, delay: 4.6 },  // D5
+        { freq: 523.25, duration: 0.95, delay: 5.4 },  // C5
+        { freq: 440.00, duration: 0.75, delay: 6.4 },  // A4
+        { freq: 392.00, duration: 1.5,  delay: 7.2 },  // G4
+        { freq: 523.25, duration: 0.9,  delay: 8.8 },  // C5
+        { freq: 659.25, duration: 1.8,  delay: 9.8 }   // E5 (Climax note)
+      ];
+
+      anthemMelody.forEach(note => {
+        setTimeout(() => {
+          if (ctx.state === 'closed') return;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'triangle'; // Warm cinematic tone
+          osc.frequency.setValueAtTime(note.freq, ctx.currentTime);
+
+          gain.gain.setValueAtTime(0.001, ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.15);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + note.duration);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start();
+          osc.stop(ctx.currentTime + note.duration);
+        }, note.delay * 1000);
+      });
+    } catch (e) {
+      console.warn('Cinematic patriotic music error:', e);
+    }
+  };
 }
 
 /* ----------------------------------------------------
-   4. PAGE 5 REAL VIDEO ENGINE & HEADPHONE INSTRUCTION
+   4. PAGE 5 REAL VIDEO & AUTOMATIC BLACK & WHITE SUTRA SHOWCASE ENGINE
    ---------------------------------------------------- */
 function initPage5Engine() {
   const videoEl = document.getElementById('page5Video');
   const videoWrapper = document.getElementById('page5VideoWrapper');
   const headphoneCard = document.getElementById('page5HeadphoneCard');
   const startHint = document.getElementById('page5StartHint');
-  const endHint = document.getElementById('page5EndHint');
+  const sutraCard = document.getElementById('page5SutraCard');
+  const sutraText = document.getElementById('page5SutraText');
+  const sutraEndHint = document.getElementById('page5SutraEndHint');
 
   if (videoEl) {
     videoEl.src = page5VideoSrc;
   }
 
-  let page5Stage = 'HEADPHONE'; // 'HEADPHONE' | 'PLAYING' | 'FINISHED'
+  const sutraList = [
+    "JAY HIND",
+    "VANDE MATARAM",
+    "SATYAMEVA JAYATE",
+    "INQUILAB ZINDABAD",
+    "SARE JAHAN SE ACCHA"
+  ];
+
+  let page5Stage = 'HEADPHONE'; // 'HEADPHONE' | 'PLAYING' | 'SUTRA'
+  let sutraTimer = null;
+  let currentSutraIndex = 0;
 
   window.resetPage5ToHeadphoneStage = function() {
     page5Stage = 'HEADPHONE';
+    clearTimeout(sutraTimer);
+
     if (videoEl) {
       videoEl.pause();
       videoEl.currentTime = 0;
@@ -337,16 +348,60 @@ function initPage5Engine() {
     if (videoWrapper) videoWrapper.classList.remove('active-video');
     if (headphoneCard) headphoneCard.classList.remove('fade-out');
     if (startHint) startHint.classList.remove('hidden-hint');
-    if (endHint) endHint.classList.remove('show-hint');
+    if (sutraCard) sutraCard.classList.remove('active-sutra');
+    if (sutraEndHint) sutraEndHint.classList.remove('show-hint');
   };
+
+  function renderSutra(index) {
+    if (index >= sutraList.length) {
+      if (sutraEndHint) sutraEndHint.classList.add('show-hint');
+      return;
+    }
+
+    currentSutraIndex = index;
+    if (sutraText) {
+      sutraText.classList.add('fade-out');
+
+      setTimeout(() => {
+        sutraText.textContent = sutraList[index];
+        sutraText.classList.remove('fade-out');
+
+        clearTimeout(sutraTimer);
+        sutraTimer = setTimeout(() => {
+          if (index + 1 < sutraList.length) {
+            renderSutra(index + 1);
+          } else {
+            if (sutraEndHint) sutraEndHint.classList.add('show-hint');
+          }
+        }, 2600); // Automatically cycle to next sutra every 2.6 seconds
+      }, 400);
+    }
+  }
+
+  function startSutraSequence() {
+    page5Stage = 'SUTRA';
+
+    if (videoEl) videoEl.pause();
+    if (videoWrapper) videoWrapper.classList.remove('active-video');
+    if (headphoneCard) headphoneCard.classList.add('fade-out');
+    if (startHint) startHint.classList.add('hidden-hint');
+    if (sutraEndHint) sutraEndHint.classList.remove('show-hint');
+
+    // Reveal black & white sutra card
+    if (sutraCard) {
+      sutraCard.classList.add('active-sutra');
+    }
+
+    // Auto-cycle through the 5 patriotic sutras (NO AUDIO)
+    renderSutra(0);
+  }
 
   window.handlePage5Interaction = function() {
     if (page5Stage === 'HEADPHONE') {
-      // First click on Page 5 -> start playing real video clip
+      // First click on Page 5 -> start playing uploaded video
       page5Stage = 'PLAYING';
       if (headphoneCard) headphoneCard.classList.add('fade-out');
       if (startHint) startHint.classList.add('hidden-hint');
-      if (endHint) endHint.classList.remove('show-hint');
       if (videoWrapper) videoWrapper.classList.add('active-video');
 
       if (videoEl) {
@@ -354,37 +409,32 @@ function initPage5Engine() {
         videoEl.muted = false;
         videoEl.volume = 1.0;
 
-        videoEl.onended = () => {
-          page5Stage = 'FINISHED';
-          if (startHint) startHint.classList.add('hidden-hint');
-          if (endHint) endHint.classList.add('show-hint');
-        };
-
-        videoEl.onerror = () => {
-          page5Stage = 'FINISHED';
-          if (startHint) startHint.classList.add('hidden-hint');
-          if (endHint) endHint.classList.add('show-hint');
-        };
+        // When video finishes completely -> automatically opens sutra card
+        videoEl.onended = startSutraSequence;
+        videoEl.onerror = startSutraSequence;
 
         videoEl.play().catch((err) => {
           console.warn('Video play error:', err);
-          page5Stage = 'FINISHED';
-          if (startHint) startHint.classList.add('hidden-hint');
-          if (endHint) endHint.classList.add('show-hint');
+          startSutraSequence();
         });
       }
-      return false; // Stay on page to watch video
+      return false; // Stay on Page 5 while watching video
     } else if (page5Stage === 'PLAYING') {
-      // Click while video is playing -> pause and show end hint
-      page5Stage = 'FINISHED';
-      if (videoEl) videoEl.pause();
-      if (startHint) startHint.classList.add('hidden-hint');
-      if (endHint) endHint.classList.add('show-hint');
+      // If clicked during video playback -> transition to sutra sequence
+      startSutraSequence();
       return false;
-    } else if (page5Stage === 'FINISHED') {
-      // Click after video finished -> advance to Page 6
-      if (videoEl) videoEl.pause();
-      return true;
+    } else if (page5Stage === 'SUTRA') {
+      // Click on sutra screen -> advance to next sutra or Page 6
+      if (currentSutraIndex < sutraList.length - 1) {
+        clearTimeout(sutraTimer);
+        renderSutra(currentSutraIndex + 1);
+        return false;
+      } else {
+        // At 5th sutra -> advance to Celebration Showcase (Page 6)
+        clearTimeout(sutraTimer);
+        if (videoEl) videoEl.pause();
+        return true;
+      }
     }
     return true;
   };

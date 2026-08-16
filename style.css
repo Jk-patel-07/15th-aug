@@ -732,28 +732,31 @@ body {
   outline: none;
 }
 
-/* Page 5 End Hint */
-.page5-end-hint {
-  display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  animation: none !important;
+/* Black & White Sutra Full-Screen Card (Automatic Post-Video Stage) */
+.sutra-fullscreen-card {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
   z-index: 100;
-  transition: opacity 0.8s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
-.page5-end-hint.show-hint {
-  display: block !important;
-  opacity: 0.85 !important;
-  visibility: visible !important;
-  animation: pulseOpacity 3s ease-in-out infinite !important;
+.sutra-fullscreen-card.active-sutra {
+  opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
 
-/* ====================================================
-   PATRIOTIC CELEBRATION SHOWCASE SCREEN (SCREEN 3)
-   ==================================================== */
-.celebration-content-centered {
+.sutra-content-centered {
   position: relative;
   z-index: 2;
   display: flex;
@@ -763,85 +766,156 @@ body {
   text-align: center;
   max-width: 900px;
   width: 100%;
+  padding: 2rem;
 }
 
-.celebration-emblem {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  margin-bottom: 1rem;
-  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
-}
-
-.celebration-main-title {
+.sutra-main-title {
   font-family: var(--font-heading);
-  font-size: clamp(2.4rem, 6.5vw, 5rem);
+  font-size: clamp(2.8rem, 7.5vw, 6rem);
   font-weight: 900;
-  letter-spacing: 4px;
+  letter-spacing: 6px;
   line-height: 1.1;
-  margin-bottom: 1rem;
-  background: linear-gradient(180deg, #FFFFFF 40%, rgba(255, 255, 255, 0.85) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+  color: #FFFFFF;
   text-transform: uppercase;
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.4);
+  margin: 0;
+  padding: 0;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.celebration-subtext {
-  font-size: clamp(1rem, 2vw, 1.3rem);
-  color: var(--color-white-muted);
-  max-width: 640px;
-  margin-bottom: 2rem;
-  line-height: 1.6;
+.sutra-main-title.fade-out {
+  opacity: 0;
+  transform: translateY(18px);
 }
 
-.celebration-tag-row {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+.sutra-end-hint {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  animation: none !important;
+  z-index: 100;
+  transition: opacity 0.8s ease;
 }
 
-.tag-pill {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  padding: 0.4rem 1.2rem;
-  border-radius: 50px;
-  text-transform: uppercase;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid var(--border-glass);
+.sutra-end-hint.show-hint {
+  display: block !important;
+  opacity: 0.85 !important;
+  visibility: visible !important;
+  animation: pulseOpacity 3s ease-in-out infinite !important;
+  pointer-events: auto;
 }
 
-.tag-saffron { color: var(--color-saffron); border-color: rgba(255, 103, 31, 0.4); }
-.tag-white { color: #FFFFFF; border-color: rgba(255, 255, 255, 0.4); }
-.tag-green { color: #00A859; border-color: rgba(4, 106, 56, 0.5); }
 
-/* Bottom Hint Styling */
-.click-continue-hint {
-  position: absolute;
-  bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 4px;
-  color: rgba(255, 255, 255, 0.65);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-  animation: pulseOpacity 3s ease-in-out infinite;
-  pointer-events: none;
-  transition: all var(--transition-normal);
-}
-
-.click-continue-hint.celebrating {
-  color: var(--color-saffron);
-  font-size: clamp(0.85rem, 1.5vw, 1rem);
-  text-shadow: 0 0 20px var(--color-saffron-glow);
-}
 
 @keyframes pulseOpacity {
   0%, 100% { opacity: 0.35; }
   50% { opacity: 0.85; }
+}
+
+/* ====================================================
+   PAGE 7: MINIMAL CINEMATIC END-CREDITS SCREEN
+   ==================================================== */
+#thanksScreen {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+.credits-content-centered {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+  padding: 3rem 2rem;
+}
+
+.credits-main-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #FFFFFF;
+  line-height: 1.25;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.credits-divider {
+  width: 60px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.25);
+  margin-bottom: 2.2rem;
+}
+
+.credits-label {
+  font-family: var(--font-sans);
+  font-size: clamp(0.75rem, 1.4vw, 0.85rem);
+  font-weight: 600;
+  letter-spacing: 6px;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 1.8rem;
+  text-transform: uppercase;
+}
+
+.credits-brands-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+}
+
+.credits-brand-item {
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 2.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.credits-footer-info {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.credits-copyright {
+  font-family: var(--font-sans);
+  font-size: clamp(0.72rem, 1.3vw, 0.85rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.8px;
+  margin: 0;
+}
+
+.credits-support {
+  font-family: var(--font-sans);
+  font-size: clamp(0.72rem, 1.3vw, 0.85rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.38);
+  letter-spacing: 0.8px;
+  margin: 0;
+}
+
+.credits-bottom-hint {
+  color: rgba(255, 255, 255, 0.45) !important;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-shadow: none;
 }
 
 /* Responsive */
@@ -849,6 +923,7 @@ body {
   .intro-main-title { font-size: 2.2rem; }
   .intro-date-badge { font-size: 1.2rem; }
   .disclaimer-main-heading { font-size: 2.4rem; }
+  .credits-main-heading { font-size: 1.8rem; }
   .top-controls { top: 1.25rem; right: 1.25rem; }
 }
 

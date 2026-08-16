@@ -139,7 +139,7 @@
     </div>
   </div>
 
-  <!-- PAGE 5: HEADPHONE INSTRUCTION & VIDEO SCREEN -->
+  <!-- PAGE 5: VIDEO & AUTOMATIC JAI HIND CINEMATIC SCREEN -->
   <div id="documentaryScreen" class="page-screen hidden-screen">
     <!-- Centered Headphone Prompt (First Screen Stage) -->
     <div id="page5HeadphoneCard" class="page5-headphone-centered">
@@ -157,33 +157,47 @@
       <video id="page5Video" class="page5-video-element" playsinline preload="auto"></video>
     </div>
 
-    <!-- End Hint (Appears after video finishes) -->
-    <div class="click-continue-hint page5-end-hint" id="page5EndHint">
-      <span>CLICK ANYWHERE TO CONTINUE</span>
+    <!-- AUTOMATIC BLACK & WHITE SUTRA CARD (Revealed after video finishes) -->
+    <div id="page5SutraCard" class="sutra-fullscreen-card">
+      <div class="sutra-content-centered">
+        <h1 id="page5SutraText" class="sutra-main-title">JAY HIND</h1>
+      </div>
+
+      <!-- Bottom Navigation Hint -->
+      <div class="click-continue-hint sutra-end-hint" id="page5SutraEndHint">
+        <span>CLICK ANYWHERE TO CONTINUE</span>
+      </div>
     </div>
   </div>
 
-  <!-- PAGE 6: PATRIOTIC CELEBRATION SHOWCASE SCREEN -->
-  <div id="celebrationScreen" class="page-screen hidden-screen">
-    <div class="bg-photo-wrapper">
-      <img src="./flag_bg.jpg" alt="Indian Flag Background" class="bg-photo-img animated-ken-burns" />
-      <div class="bg-photo-overlay overlay-deep"></div>
-      <div id="celebrationLightSweep" class="bg-light-sweep"></div>
-    </div>
 
-    <div class="celebration-content-centered">
-      <div class="celebration-emblem">🇮🇳</div>
-      <h1 class="celebration-main-title" id="celebrationTitle">VANDE MATARAM</h1>
-      <p class="celebration-subtext" id="celebrationSubtext">Saluting the brave heroes of freedom & the sovereign spirit of India.</p>
-      <div class="celebration-tag-row">
-        <span class="tag-pill tag-saffron">UNITY</span>
-        <span class="tag-pill tag-white">PEACE</span>
-        <span class="tag-pill tag-green">PROSPERITY</span>
+
+  <!-- PAGE 7: MINIMAL CINEMATIC END-CREDITS SCREEN -->
+  <div id="thanksScreen" class="page-screen hidden-screen">
+    <!-- Centered End-Credit Content -->
+    <div class="credits-content-centered">
+      <h2 class="credits-main-heading">THANKS FOR VISITING THIS WEBSITE</h2>
+      
+      <div class="credits-divider"></div>
+      
+      <p class="credits-label">PRESENTED BY</p>
+      
+      <div class="credits-brands-list">
+        <p class="credits-brand-item">DDO</p>
+        <p class="credits-brand-item">DDO UNIVERSE</p>
+        <p class="credits-brand-item">DDO One</p>
+      </div>
+
+      <!-- Copyright & Support Info -->
+      <div class="credits-footer-info">
+        <p class="credits-copyright">© 2026 DDO Company. All rights reserved.</p>
+        <p class="credits-support">Need Support? Contact DDO Company Support Team</p>
       </div>
     </div>
 
-    <div class="click-continue-hint celebrating" id="bottomHint">
-      <span id="hintText">CLICK ANYWHERE TO CELEBRATE 🇮🇳</span>
+    <!-- Bottom Close Hint -->
+    <div class="click-continue-hint credits-bottom-hint">
+      <span>CLICK ANYWHERE TO CLOSE</span>
     </div>
   </div>
 
