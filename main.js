@@ -1,4 +1,5 @@
 import page5VideoSrc from './page5_video.mp4';
+import jayHindAudioSrc from './jay_hind_audio.mp3';
 
 document.addEventListener('DOMContentLoaded', () => {
   initPageFlow();
@@ -310,7 +311,7 @@ function initAudioSynthesizer() {
 }
 
 /* ----------------------------------------------------
-   4. PAGE 5 REAL VIDEO & AUTOMATIC BLACK & WHITE SUTRA SHOWCASE ENGINE
+   4. PAGE 5 REAL VIDEO & AUTOMATIC SUTRA SHOWCASE ENGINE WITH AUDIO
    ---------------------------------------------------- */
 function initPage5Engine() {
   const videoEl = document.getElementById('page5Video');
@@ -320,6 +321,8 @@ function initPage5Engine() {
   const sutraCard = document.getElementById('page5SutraCard');
   const sutraText = document.getElementById('page5SutraText');
   const sutraEndHint = document.getElementById('page5SutraEndHint');
+
+  const jayHindAudio = new Audio(jayHindAudioSrc);
 
   if (videoEl) {
     videoEl.src = page5VideoSrc;
@@ -337,9 +340,17 @@ function initPage5Engine() {
   let sutraTimer = null;
   let currentSutraIndex = 0;
 
+  function stopJayHindAudio() {
+    if (jayHindAudio) {
+      jayHindAudio.pause();
+      jayHindAudio.currentTime = 0;
+    }
+  }
+
   window.resetPage5ToHeadphoneStage = function() {
     page5Stage = 'HEADPHONE';
     clearTimeout(sutraTimer);
+    stopJayHindAudio();
 
     if (videoEl) {
       videoEl.pause();
@@ -392,7 +403,16 @@ function initPage5Engine() {
       sutraCard.classList.add('active-sutra');
     }
 
-    // Auto-cycle through the 5 patriotic sutras (NO AUDIO)
+    // Play WhatsApp audio right when JAY HIND text starts!
+    if (jayHindAudio) {
+      jayHindAudio.currentTime = 0;
+      jayHindAudio.volume = 1.0;
+      jayHindAudio.play().catch(err => {
+        console.warn('Jay Hind audio playback error:', err);
+      });
+    }
+
+    // Auto-cycle through the 5 patriotic sutras
     renderSutra(0);
   }
 
@@ -409,7 +429,7 @@ function initPage5Engine() {
         videoEl.muted = false;
         videoEl.volume = 1.0;
 
-        // When video finishes completely -> automatically opens sutra card
+        // When video finishes completely -> automatically opens sutra card & plays audio
         videoEl.onended = startSutraSequence;
         videoEl.onerror = startSutraSequence;
 
@@ -424,14 +444,15 @@ function initPage5Engine() {
       startSutraSequence();
       return false;
     } else if (page5Stage === 'SUTRA') {
-      // Click on sutra screen -> advance to next sutra or Page 6
+      // Click on sutra screen -> advance to next sutra or Page 7
       if (currentSutraIndex < sutraList.length - 1) {
         clearTimeout(sutraTimer);
         renderSutra(currentSutraIndex + 1);
         return false;
       } else {
-        // At 5th sutra -> advance to Celebration Showcase (Page 6)
+        // At 5th sutra -> stop audio and advance to End-Credits Screen (Page 7)
         clearTimeout(sutraTimer);
+        stopJayHindAudio();
         if (videoEl) videoEl.pause();
         return true;
       }
