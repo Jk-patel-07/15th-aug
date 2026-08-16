@@ -630,14 +630,21 @@ body {
 }
 
 /* ====================================================
-   PAGE 5 SCREEN (SIMPLE CENTERED TEXT)
+   PAGE 5 SCREEN (VIDEO WITH HEADPHONE INSTRUCTION)
    ==================================================== */
 #documentaryScreen {
   background-color: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  padding: 1.5rem;
 }
 
-/* Dead-Centered Container for Normal-Sized Text */
-.page5-content-centered {
+/* Centered Headphone Prompt (First Screen Stage) */
+.page5-headphone-centered {
   position: relative;
   z-index: 10;
   display: flex;
@@ -646,33 +653,59 @@ body {
   justify-content: center;
   text-align: center;
   margin: auto;
-  padding: 0;
-  width: 100%;
-  max-width: 900px;
+  padding: 0 1rem;
+  max-width: 800px;
   pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.page5-simple-text {
+.page5-headphone-centered.fade-out {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.headphone-icon-large {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 0.75rem;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
+}
+
+.headphone-text-main {
   font-family: var(--font-sans);
-  font-size: clamp(1.05rem, 2.3vw, 1.35rem);
+  font-size: clamp(0.95rem, 2vw, 1.25rem);
   font-weight: 400;
-  letter-spacing: 2.5px;
   color: rgba(255, 255, 255, 0.92);
-  text-transform: uppercase;
+  letter-spacing: 1px;
   margin: 0;
-  padding: 0;
-  line-height: 1.4;
+  line-height: 1.5;
   text-align: center;
 }
 
-/* Page 5 Full-Screen Video Wrapper */
-.page5-full-video-wrapper {
+/* Page 5 Start Hint */
+.page5-start-hint {
+  display: block;
+  opacity: 0.85;
+  z-index: 100;
+  transition: opacity 0.5s ease;
+  pointer-events: auto;
+}
+
+.page5-start-hint.hidden-hint {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  animation: none !important;
+}
+
+/* Video Wrapper & Fullscreen Video Element */
+.page5-video-wrapper {
   position: absolute;
   inset: 0;
   width: 100vw;
   height: 100vh;
   background-color: #000000;
-  z-index: 100;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -682,12 +715,12 @@ body {
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.page5-full-video-wrapper.active-video {
+.page5-video-wrapper.active-video {
   opacity: 1;
   visibility: visible;
 }
 
-.page5-fullscreen-video {
+.page5-video-element {
   width: 100vw;
   height: 100vh;
   max-width: 100%;
@@ -699,22 +732,21 @@ body {
   outline: none;
 }
 
-/* Page 5 Start & End Hints */
-.page5-start-hint {
-  opacity: 0.75;
-  transition: opacity 0.6s ease;
-  pointer-events: auto;
-}
-
+/* Page 5 End Hint */
 .page5-end-hint {
-  opacity: 0;
-  z-index: 200;
-  transition: opacity 0.8s ease, transform 0.8s ease;
-  pointer-events: none;
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  animation: none !important;
+  z-index: 100;
+  transition: opacity 0.8s ease;
 }
 
 .page5-end-hint.show-hint {
-  opacity: 0.85;
+  display: block !important;
+  opacity: 0.85 !important;
+  visibility: visible !important;
+  animation: pulseOpacity 3s ease-in-out infinite !important;
   pointer-events: auto;
 }
 

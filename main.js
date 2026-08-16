@@ -82,33 +82,31 @@ function initPageFlow() {
     });
   }
 
-  // 4. Freedom Fighter Tribute Screen Click -> Opens Page 5
+  // 4. Freedom Fighter Tribute Screen Click -> Opens Page 5 (Stage 1: Headphone Screen)
   if (tributeScreen) {
     tributeScreen.addEventListener('click', (e) => {
       if (e.target.closest('#audioBtn')) return;
       switchScreen(tributeScreen, documentaryScreen, () => {
-        if (window.startPage5Sequence) {
-          window.startPage5Sequence();
+        if (window.resetPage5ToHeadphoneStage) {
+          window.resetPage5ToHeadphoneStage();
         }
       });
     });
   }
 
-  // 5. Page 5 Screen Click -> Start Video or Immediately Open Next Page
-  window.advanceFromPage5 = function() {
-    if (window.stopPage5Sequence) window.stopPage5Sequence();
-    switchScreen(documentaryScreen, celebrationScreen, () => {
-      if (window.triggerPetals) {
-        window.triggerPetals(70);
-      }
-    });
-  };
-
+  // 5. Page 5 Screen Click -> Start Video or Advance Screen
   if (documentaryScreen) {
     documentaryScreen.addEventListener('click', (e) => {
       if (e.target.closest('#audioBtn')) return;
-      if (window.handlePage5Click) {
-        window.handlePage5Click();
+      if (window.handlePage5Interaction) {
+        const shouldAdvance = window.handlePage5Interaction();
+        if (shouldAdvance) {
+          switchScreen(documentaryScreen, celebrationScreen, () => {
+            if (window.triggerPetals) {
+              window.triggerPetals(70);
+            }
+          });
+        }
       }
     });
   }
@@ -315,112 +313,82 @@ function initAudioSynthesizer() {
 }
 
 /* ----------------------------------------------------
-   4. PAGE 5 TWO-STAGE VIDEO ENGINE (VIDEO #1 & VIDEO CLIP #2 TITLE)
+   4. PAGE 5 REAL VIDEO ENGINE & HEADPHONE INSTRUCTION
    ---------------------------------------------------- */
 function initPage5Engine() {
   const videoEl = document.getElementById('page5Video');
-  const fullVideoWrapper = document.getElementById('page5FullVideoWrapper');
-  const titleCard = document.getElementById('page5TitleCard');
-  const titleText = document.getElementById('page5TitleText');
+  const videoWrapper = document.getElementById('page5VideoWrapper');
+  const headphoneCard = document.getElementById('page5HeadphoneCard');
   const startHint = document.getElementById('page5StartHint');
   const endHint = document.getElementById('page5EndHint');
 
-  if (videoEl) videoEl.src = page5VideoSrc;
+  if (videoEl) {
+    videoEl.src = page5VideoSrc;
+  }
 
-  let page5State = 'TITLE_1'; // 'TITLE_1' | 'PLAYING_1' | 'TITLE_2'
+  let page5Stage = 'HEADPHONE'; // 'HEADPHONE' | 'PLAYING' | 'FINISHED'
 
-  function stopAllMedia() {
-    page5State = 'TITLE_1';
+  window.resetPage5ToHeadphoneStage = function() {
+    page5Stage = 'HEADPHONE';
     if (videoEl) {
       videoEl.pause();
       videoEl.currentTime = 0;
-      videoEl.onended = null;
-      videoEl.ontimeupdate = null;
-      videoEl.onerror = null;
     }
-    if (fullVideoWrapper) {
-      fullVideoWrapper.classList.remove('active-video');
-    }
-    if (titleText) {
-      titleText.textContent = 'OLD VIDEO CLIP #1';
-    }
-    if (titleCard) {
-      titleCard.style.opacity = '1';
-    }
-    if (startHint) {
-      startHint.style.opacity = '0.75';
-    }
-    if (endHint) {
-      endHint.classList.remove('show-hint');
-    }
-  }
-
-  window.startPage5Sequence = function() {
-    stopAllMedia();
+    if (videoWrapper) videoWrapper.classList.remove('active-video');
+    if (headphoneCard) headphoneCard.classList.remove('fade-out');
+    if (startHint) startHint.classList.remove('hidden-hint');
+    if (endHint) endHint.classList.remove('show-hint');
   };
 
-  function showTitle2Screen() {
-    page5State = 'TITLE_2';
-    if (videoEl) {
-      videoEl.pause();
-    }
-    if (fullVideoWrapper) {
-      fullVideoWrapper.classList.remove('active-video');
-    }
-    if (titleText) {
-      titleText.textContent = 'OLD VIDEO CLIP #2';
-    }
-    if (titleCard) {
-      titleCard.style.opacity = '1';
-    }
-    if (startHint) {
-      startHint.style.opacity = '0';
-    }
-    if (endHint) {
-      endHint.classList.add('show-hint');
-    }
-  }
-
-  window.handlePage5Click = function() {
-    if (page5State === 'TITLE_1') {
-      // First click: Start Video Clip #1 in Full-Screen mode
-      page5State = 'PLAYING_1';
-
-      if (titleCard) titleCard.style.opacity = '0';
-      if (startHint) startHint.style.opacity = '0';
-      if (fullVideoWrapper) fullVideoWrapper.classList.add('active-video');
+  window.handlePage5Interaction = function() {
+    if (page5Stage === 'HEADPHONE') {
+      // First click on Page 5 -> start playing real video clip
+      page5Stage = 'PLAYING';
+      if (headphoneCard) headphoneCard.classList.add('fade-out');
+      if (startHint) startHint.classList.add('hidden-hint');
+      if (endHint) endHint.classList.remove('show-hint');
+      if (videoWrapper) videoWrapper.classList.add('active-video');
 
       if (videoEl) {
         videoEl.currentTime = 0;
         videoEl.muted = false;
         videoEl.volume = 1.0;
 
-        videoEl.onended = showTitle2Screen;
-        videoEl.onerror = showTitle2Screen;
-        videoEl.ontimeupdate = () => {
-          if (videoEl.duration && (videoEl.duration - videoEl.currentTime <= 0.4)) {
-            showTitle2Screen();
-          }
+        videoEl.onended = () => {
+          page5Stage = 'FINISHED';
+          if (startHint) startHint.classList.add('hidden-hint');
+          if (endHint) endHint.classList.add('show-hint');
         };
 
-        videoEl.play().catch(err => {
+        videoEl.onerror = () => {
+          page5Stage = 'FINISHED';
+          if (startHint) startHint.classList.add('hidden-hint');
+          if (endHint) endHint.classList.add('show-hint');
+        };
+
+        videoEl.play().catch((err) => {
           console.warn('Video play error:', err);
-          showTitle2Screen();
+          page5Stage = 'FINISHED';
+          if (startHint) startHint.classList.add('hidden-hint');
+          if (endHint) endHint.classList.add('show-hint');
         });
       }
-    } else if (page5State === 'PLAYING_1') {
-      // Clicked while Video Clip #1 is playing -> finish Video Clip #1 and show Video Clip #2 screen
-      showTitle2Screen();
-    } else if (page5State === 'TITLE_2') {
-      // Clicked on "OLD VIDEO CLIP #2" screen -> advance to Page 6
-      if (window.advanceFromPage5) {
-        window.advanceFromPage5();
-      }
+      return false; // Stay on page to watch video
+    } else if (page5Stage === 'PLAYING') {
+      // Click while video is playing -> pause and show end hint
+      page5Stage = 'FINISHED';
+      if (videoEl) videoEl.pause();
+      if (startHint) startHint.classList.add('hidden-hint');
+      if (endHint) endHint.classList.add('show-hint');
+      return false;
+    } else if (page5Stage === 'FINISHED') {
+      // Click after video finished -> advance to Page 6
+      if (videoEl) videoEl.pause();
+      return true;
     }
-  };
-
-  window.stopPage5Sequence = function() {
-    stopAllMedia();
+    return true;
   };
 }
+
+
 

@@ -139,24 +139,25 @@
     </div>
   </div>
 
-  <!-- PAGE 5: OLD VIDEO CLIPS SCREEN -->
+  <!-- PAGE 5: HEADPHONE INSTRUCTION & VIDEO SCREEN -->
   <div id="documentaryScreen" class="page-screen hidden-screen">
-    <!-- Dynamic Title Screen Layer -->
-    <div id="page5TitleCard" class="page5-title-centered">
-      <p id="page5TitleText" class="page5-simple-text">OLD VIDEO CLIP #1</p>
+    <!-- Centered Headphone Prompt (First Screen Stage) -->
+    <div id="page5HeadphoneCard" class="page5-headphone-centered">
+      <div class="headphone-icon-large">🎧</div>
+      <p class="headphone-text-main">Use headphones and watch the video.</p>
     </div>
 
-    <!-- Start Hint (Visible Before Click) -->
+    <!-- Start Hint (Visible before starting video) -->
     <div class="click-continue-hint page5-start-hint" id="page5StartHint">
       <span>CLICK ANYWHERE TO START VIDEO</span>
     </div>
 
-    <!-- Full-Screen Video Layer (Revealed On Click) -->
-    <div id="page5FullVideoWrapper" class="page5-full-video-wrapper hidden-video">
-      <video id="page5Video" class="page5-fullscreen-video" playsinline preload="auto"></video>
+    <!-- Video Wrapper Container (Plays Video After Click) -->
+    <div id="page5VideoWrapper" class="page5-video-wrapper">
+      <video id="page5Video" class="page5-video-element" playsinline preload="auto"></video>
     </div>
 
-    <!-- End Hint (Appears for Video Clip #2 Screen) -->
+    <!-- End Hint (Appears after video finishes) -->
     <div class="click-continue-hint page5-end-hint" id="page5EndHint">
       <span>CLICK ANYWHERE TO CONTINUE</span>
     </div>
