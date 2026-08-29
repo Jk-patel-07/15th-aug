@@ -1,351 +1,50 @@
-<!DOCTYPE html>
+# 🇮🇳 Happy Independence Day - Interactive Web Experience
 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🇮🇳 Happy Independence Day - Interactive Web Experience</title>
+A cinematic, interactive web experience celebrating India's Independence Day (15th August) with engaging multimedia content, patriotic imagery, and immersive animations.
 
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.7;
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 24px;
-      color: #24292f;
-      background: #ffffff;
-    }
+## ✨ Overview
 
-    h1, h2, h3 {
-      line-height: 1.3;
-    }
+This project is a beautifully crafted Independence Day tribute featuring:
 
-    h1 {
-      font-size: 34px;
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 12px;
-    }
+- 🎬 **Cinematic animations** and smooth transitions
+- 🇮🇳 **Interactive storytelling** about Indian freedom fighters
+- 🔊 **Patriotic multimedia** including audio and video
+- 📱 **Responsive design** for all devices
+- 🌸 **Animated visual effects** including flower petal showers
+- 🎨 **Dynamic backgrounds** and typography animations
 
-    h2 {
-      margin-top: 35px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
-    }
+## 🎬 Features
 
-    h3 {
-      margin-top: 25px;
-    }
+### Pages & Content
 
-    code {
-      background: #f6f8fa;
-      padding: 3px 6px;
-      border-radius: 5px;
-      font-family: Consolas, monospace;
-    }
+1. **Intro Screen** - Cinematic opening with animated background
+2. **Interactive Pages** - Multi-page Independence Day experience
+3. **Historical Figures**
+   - Mahatma Gandhi
+   - Subhas Chandra Bose
+   - Bhagat Singh
+   - Rani Lakshmibai
+   - Sardar Patel
 
-    pre {
-      background: #f6f8fa;
-      padding: 18px;
-      border-radius: 8px;
-      overflow-x: auto;
-    }
+## 🔊 Media
 
-    ul, ol {
-      padding-left: 28px;
-    }
+- `jay_hind_audio.mp3` - Patriotic soundtrack
+- `page5_video.mp4` - Video content
+- `subhas_bose.mp4` - Biography video
+- Freedom fighter portraits and themed backgrounds
 
-    .hero {
-      text-align: center;
-      padding: 30px 20px;
-      border-radius: 12px;
-      background: linear-gradient(
-        135deg,
-        #ff9933 0%,
-        #ffffff 50%,
-        #138808 100%
-      );
-    }
+## 🛠️ Technology Stack
 
-    .hero h1 {
-      border: none;
-      margin: 0;
-    }
+- **Build Tool:** Vite
+- **Frontend:** HTML5, CSS3, JavaScript
+- **Animations:** CSS & Canvas
+- **Fonts:** Cinzel, Outfit
+- **Responsive:** Mobile-first design
 
-    .hero p {
-      font-size: 18px;
-      font-weight: 500;
-    }
+## 🚀 Installation
 
-    .highlight {
-      padding: 15px;
-      background: #f6f8fa;
-      border-left: 4px solid #ff9933;
-      border-radius: 5px;
-    }
+### 1. Clone
 
-    .footer {
-      margin-top: 40px;
-      padding: 20px;
-      text-align: center;
-      border-top: 1px solid #ddd;
-      font-weight: bold;
-    }
-  </style>
-
-</head>
-
-<body>
-
-  <header class="hero">
-    <h1>🇮🇳 Happy Independence Day</h1>
-    <p>Interactive Web Experience</p>
-  </header>
-
-  <main>
-
-```
-<h2>Overview</h2>
-
-<p>
-  This project is a beautifully crafted Independence Day tribute
-  celebrating India's Independence Day on <strong>15th August</strong>.
-  It provides a cinematic and interactive web experience featuring
-  engaging multimedia content, patriotic imagery, historical stories,
-  and immersive animations.
-</p>
-
-<div class="highlight">
-  <strong>🇮🇳 Theme:</strong>
-  Celebrating India's Independence, Unity, History, and Patriotism.
-</div>
-
-<h2>✨ Features</h2>
-
-<h3>🎬 Pages &amp; Content</h3>
-
-<ol>
-  <li>
-    <strong>Intro Screen</strong> -
-    Cinematic opening with an animated background and patriotic message.
-  </li>
-
-  <li>
-    <strong>Interactive Pages</strong> -
-    Multi-page experience celebrating different aspects of India's independence.
-  </li>
-
-  <li>
-    <strong>Historical Figures</strong> -
-    Dedicated sections for important freedom fighters, including:
-    <ul>
-      <li>Mahatma Gandhi</li>
-      <li>Subhas Chandra Bose</li>
-      <li>Bhagat Singh</li>
-      <li>Rani Lakshmibai</li>
-      <li>Sardar Patel</li>
-    </ul>
-  </li>
-</ol>
-
-<h3>🎨 Interactive Elements</h3>
-
-<ul>
-  <li><strong>Audio Toggle</strong> - Toggle the patriotic melody on or off.</li>
-  <li><strong>Animated Backgrounds</strong> - Ken Burns effect on background images.</li>
-  <li><strong>Petal Shower Animation</strong> - Decorative flower petals falling across the screen.</li>
-  <li><strong>Smooth Page Transitions</strong> - Click-to-navigate interface.</li>
-  <li><strong>Dynamic Typography</strong> - Reveal animations for text elements.</li>
-</ul>
-
-<h3>🔊 Multimedia</h3>
-
-<ul>
-  <li><strong>Background Music</strong> - <code>jay_hind_audio.mp3</code></li>
-  <li><strong>Videos</strong> - Biographical videos of freedom fighters.</li>
-  <li><strong>Images</strong> - High-quality portraits and themed backgrounds.</li>
-</ul>
-
-<h2>📁 Project Structure</h2>
-
-<pre>
-```
-
-├── index.html
-├── style.css
-├── main.js
-├── package.json
-├── package-lock.json
-├── flag_bg.jpg
-├── history_bg.png
-├── jay_hind_audio.mp3
-├── jay_hind_audio.mpeg
-├── page5_video.mp4
-├── subhas_bose.mp4
-├── gandhi.png
-├── bhagat_singh.png
-├── azad.png
-├── patel.png
-├── rani_lakshmibai.png
-├── subhas_bose.png
-└── README.md </pre>
-
-```
-<h2>🛠️ Technology Stack</h2>
-
-<ul>
-  <li><strong>Build Tool:</strong> Vite</li>
-  <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript (ES Module)</li>
-  <li><strong>Animations:</strong> CSS Animations and Canvas Animations</li>
-  <li><strong>Fonts:</strong> Google Fonts (Cinzel, Outfit)</li>
-  <li><strong>Responsive Design:</strong> Mobile-first design with viewport meta tags</li>
-</ul>
-
-<h2>🚀 Installation &amp; Setup</h2>
-
-<h3>Prerequisites</h3>
-
-<ul>
-  <li>Node.js v14 or higher</li>
-  <li>npm or yarn package manager</li>
-</ul>
-
-<h3>1. Clone the Repository</h3>
-
-<pre><code>git clone https://github.com/Jk-patel-07/15th-aug.git
-```
-
-cd 15th-aug</code></pre>
-
-```
-<h3>2. Install Dependencies</h3>
-
-<pre><code>npm install</code></pre>
-
-<h3>3. Run Development Server</h3>
-
-<pre><code>npm run dev</code></pre>
-
-<p>
-  The application will normally be available at
-  <code>http://localhost:5173</code>, or at the port displayed in your terminal.
-</p>
-
-<h3>4. Build for Production</h3>
-
-<pre><code>npm run build</code></pre>
-
-<h3>5. Preview Production Build</h3>
-
-<pre><code>npm run preview</code></pre>
-
-<h2>📖 How to Use</h2>
-
-<ol>
-  <li>Open the website in your browser.</li>
-  <li>Click anywhere on the intro screen to continue.</li>
-  <li>Navigate through the different pages using click interactions.</li>
-  <li>Use the audio button in the top-right corner to play or mute the patriotic melody.</li>
-  <li>Enjoy the immersive Independence Day experience.</li>
-</ol>
-
-<h2>🌐 Browser Support</h2>
-
-<ul>
-  <li>Chrome / Edge — Latest versions</li>
-  <li>Firefox — Latest versions</li>
-  <li>Safari — Latest versions</li>
-  <li>Mobile browsers — iOS Safari and Chrome Mobile</li>
-</ul>
-
-<h2>⚙️ Features Explained</h2>
-
-<h3>Audio Control</h3>
-
-<p>
-  The top-right audio button controls the background patriotic music.
-  The button icon changes to indicate whether the audio is currently
-  playing or muted.
-</p>
-
-<h3>Canvas Animations</h3>
-
-<ul>
-  <li><strong>Petal Shower:</strong> Creates falling flower petals using an animated canvas.</li>
-  <li><strong>Light Sweep:</strong> Creates animated light effects across the background.</li>
-</ul>
-
-<h3>Responsive Images</h3>
-
-<ul>
-  <li>Background images use a cinematic Ken Burns zoom effect.</li>
-  <li>Images are responsive across different screen sizes.</li>
-</ul>
-
-<h2>💻 Development</h2>
-
-<h3>File Descriptions</h3>
-
-<ul>
-  <li>
-    <strong>index.html</strong> -
-    Contains the page structure and multiple experience screens.
-  </li>
-
-  <li>
-    <strong>style.css</strong> -
-    Handles styling, animations, layouts, and responsive design.
-  </li>
-
-  <li>
-    <strong>main.js</strong> -
-    Handles navigation, audio controls, interactivity, and canvas animations.
-  </li>
-</ul>
-
-<h3>🎨 Customization</h3>
-
-<p>You can easily customize the project by modifying:</p>
-
-<ul>
-  <li><strong>Content:</strong> Update the text in <code>index.html</code>.</li>
-  <li><strong>Colors &amp; Fonts:</strong> Modify CSS variables in <code>style.css</code>.</li>
-  <li><strong>Animations:</strong> Adjust CSS animations or JavaScript animation logic.</li>
-  <li><strong>Media:</strong> Replace images, videos, and audio files with your own.</li>
-</ul>
-
-<h2>⚡ Performance Optimization</h2>
-
-<ul>
-  <li>Optimized images for web usage.</li>
-  <li>GPU-accelerated CSS animations.</li>
-  <li>Lazy loading for media content.</li>
-  <li>Efficient event handling for smoother interactions.</li>
-</ul>
-
-<h2>📜 License</h2>
-
-<p>
-  This project is created as a tribute to India's Independence Day.
-  Please check with the repository owner for specific licensing terms.
-</p>
-
-<h2>👨‍💻 Credits</h2>
-
-<p>
-  Created by <strong>Jk-patel-07</strong> and the
-  <strong>DDO Company team</strong>.
-</p>
-
-<div class="footer">
-  🇮🇳 Celebrating Independence, Unity, and the Spirit of India! 🇮🇳
-</div>
-```
-
-  </main>
-
-</body>
-</html>
-
-
- 
+```bash
+git clone https://github.com/Jk-patel-07/15th-aug.git
+cd 15th-aug
